@@ -22,7 +22,7 @@ def get_path_token():
         'addr': 'celery_worker'
     }
     driver = webdriver.Remote(
-        command_executor='http://selenium-hub:4444/wd/hub',
+        command_executor='http://shub:4444/wd/hub',
         desired_capabilities={'browserName': 'chrome', 'javascriptEnabled': True},
         seleniumwire_options=options
     )

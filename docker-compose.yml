@@ -2,26 +2,33 @@ version: "3"
 services:
   chrome:
     image: selenium/node-chrome:4.0.0-rc-1-prerelease-20210823
+    container_name: ronin-url-token-chrome
+    hostname: ronin-url-token-chrome
     shm_size: 2gb
+    networks:
+      - axie-network
     depends_on:
-      - selenium-hub
+      - shub
     environment:
-      - SE_EVENT_BUS_HOST=selenium-hub
+      - SE_EVENT_BUS_HOST=shub
       - SE_EVENT_BUS_PUBLISH_PORT=4442
       - SE_EVENT_BUS_SUBSCRIBE_PORT=4443
     ports:
       - "6900:5900"
 
-  selenium-hub:
+  shub:
     image: selenium/hub:4.0.0-rc-1-prerelease-20210823
-    container_name: selenium-hub
+    container_name: ronin-url-token-selenium-hub
+    hostname: ronin-url-token-selenium-hub
+    networks:
+      - axie-network
     ports:
       - "4442:4442"
       - "4443:4443"
       - "4444:4444"
 
   api:
-    image: merouaneb/ronin-url-token-api:latest
+    image: merouaneb/ronin-url-token-api:rc-v0.1.0
     restart: always
     environment:
       - SECRET=devsecretkey123456
@@ -43,27 +50,29 @@ services:
   celery_worker:
     container_name: ronin-url-token-celery-worker
     hostname: ronin-url-token-celery
-    image: merouaneb/ronin-url-token-celery:latest
+    image: merouaneb/ronin-url-token-celery:rc-v0.1.0
     restart: always
     environment:
       - APP_SETTINGS=production
-    command: celery -A tasks worker --beat --hostname=ronin-url-token-celery@%h --loglevel=info
+    command: celery -A tasks worker --beat --hostname=celery_worker_1@%h --loglevel=info
     networks:
       - axie-network
     depends_on:
       - mariadb
       - redis
-      - selenium-hub
+      - shub
+      - api
     links:
       - redis
       - mariadb
-      - selenium-hub
+      - shub
+      - api
     env_file:
       - ./app.env
 
   redis:
     image: redis
-    command: [ "sh", "-c", "redis-server --requirepass ${REDIS_PASS}" ]
+    command: [ "sh", "-c", "redis-server --appendonly yes --requirepass aP9XZVr2uTQSm" ]
     restart: always
     volumes:
       - redis_data:/data
