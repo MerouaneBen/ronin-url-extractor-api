@@ -5,6 +5,7 @@ from flask import (
 import socket
 import logging
 from api.url_tokens import *
+from api import db
 
 ronin_blueprint = Blueprint('ronin_url_token_api', __name__)
 logconsole = logging.getLogger('console')
@@ -22,7 +23,7 @@ def index():
 @ronin_blueprint.route('/active_token', methods=['GET'])
 def active_token():
     response = {}
-    current_token = UrlTokens.find_active_url_token()
+    current_token = UrlTokens.filter(UrlTokens.is_active == True).first()
     if current_token:
         success = True
         response.update({
