@@ -30,7 +30,7 @@ jobs:
       - name: Build and push
         uses: docker/build-push-action@v2
         with:
-          context: .
+          context: ./celery_worker
           file: ./celery_worker/Dockerfile
           push: true
           build-args: |
