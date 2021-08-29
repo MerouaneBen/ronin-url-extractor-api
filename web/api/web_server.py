@@ -4,7 +4,7 @@ from flask import (
 )
 import socket
 import logging
-from url_tokens import *
+from app.url_tokens import *
 
 ronin_blueprint = Blueprint('ronin_url_token_api', __name__)
 logconsole = logging.getLogger('console')
