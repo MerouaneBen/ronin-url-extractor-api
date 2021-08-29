@@ -4,7 +4,7 @@ from flask import Flask
 from sqlalchemy import create_engine
 from sqlalchemy.orm import scoped_session, sessionmaker
 from sqlalchemy.ext.declarative import declarative_base
-from config import Config
+from instance.config import Config
 
 engine = create_engine("mariadb+mariadbconnector://" + Config.MYSQL_USER + ":" + Config.MYSQL_PASSWORD + "@" +
                        Config.MYSQL_HOST + ":" + Config.MYSQL_PORT + "/" + Config.MYSQL_DATABASE, convert_unicode=True)
