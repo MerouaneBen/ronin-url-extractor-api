@@ -1,0 +1,4 @@
+#!/Volumes/XTRM-Q/projects/perso/ronin-blockchain-url-path-extractor-api/venv/bin/python
+
+import sel
+sel.main()

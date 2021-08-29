@@ -1,0 +1,113 @@
+version: "3"
+services:
+  chrome:
+    image: selenium/node-chrome:4.0.0-rc-1-prerelease-20210823
+    shm_size: 2gb
+    depends_on:
+      - selenium-hub
+    environment:
+      - SE_EVENT_BUS_HOST=selenium-hub
+      - SE_EVENT_BUS_PUBLISH_PORT=4442
+      - SE_EVENT_BUS_SUBSCRIBE_PORT=4443
+    ports:
+      - "6900:5900"
+
+  selenium-hub:
+    image: selenium/hub:4.0.0-rc-1-prerelease-20210823
+    container_name: selenium-hub
+    ports:
+      - "4442:4442"
+      - "4443:4443"
+      - "4444:4444"
+
+  api:
+    image: merouaneb/ronin-url-token-api:latest
+    restart: always
+    environment:
+      - SECRET=devsecretkey123456
+    networks:
+      - axie-network
+    hostname: ronin-url-token-api
+    container_name: ronin-url-token-api
+    links:
+      - mariadb
+    depends_on:
+      - mariadb
+    ports:
+      - "8181:8181"
+    expose:
+      - "8181"
+    env_file:
+      - ./app.env
+
+  celery_worker:
+    container_name: ronin-url-token-celery-worker
+    hostname: ronin-url-token-celery
+    image: merouaneb/ronin-url-token-celery:latest
+    restart: always
+    environment:
+      - APP_SETTINGS=production
+    command: celery -A tasks worker --beat --hostname=ronin-url-token-celery@%h --loglevel=info
+    networks:
+      - axie-network
+    depends_on:
+      - mariadb
+      - redis
+      - selenium-hub
+    links:
+      - redis
+      - mariadb
+      - selenium-hub
+    env_file:
+      - ./app.env
+
+  redis:
+    image: redis
+    command: [ "sh", "-c", "redis-server --requirepass ${REDIS_PASS}" ]
+    restart: always
+    volumes:
+      - redis_data:/data
+    networks:
+      - axie-network
+    hostname: ronin-url-token-redis
+    container_name: ronin-url-token-redis
+    env_file:
+      - ./app.env
+
+  mariadb:
+    container_name: ronin-url-token-mariadb
+    hostname: ronin-url-token-mariadb
+    restart: always
+    image: mariadb:latest
+    ports:
+      - "3306:3306"
+    networks:
+      - axie-network
+    env_file:
+      - ./app.env
+    healthcheck:
+      test: "/usr/bin/mysql --user=root --password=JDHW12dsf230NMHFs --execute \"SHOW DATABASES;\""
+      interval: 10s
+      timeout: 20s
+      start_period: 10s
+      retries: 5
+
+  adminer:
+    container_name: ronin-url-token-adminer
+    hostname: ronin-url-token-adminer
+    image: adminer
+    restart: always
+    networks:
+      - axie-network
+    ports:
+      - 9090:8080
+    depends_on:
+      - mariadb
+
+networks:
+  axie-network:
+    external: true
+
+volumes:
+  instance_data:
+  redis_data:

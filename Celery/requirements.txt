@@ -1,0 +1,8 @@
+celery
+redis
+selenium
+selenium-wire
+requests
+pytz
+SQLAlchemy
+mariadb
