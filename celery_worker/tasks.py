@@ -19,7 +19,7 @@ def setup_periodic_tasks(sender, **kwargs):
 def get_path_token():
     options = {
         # Address of the machine running Selenium Wire.
-        'addr': 'selenium-hub'
+        'addr': 'celery_worker'
     }
     driver = webdriver.Remote(
         command_executor='http://selenium-hub:4444/wd/hub',
