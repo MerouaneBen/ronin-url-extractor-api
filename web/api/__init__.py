@@ -2,6 +2,7 @@ import os
 
 from flask import Flask
 from instance.config import Config
+from flask_sqlalchemy import SQLAlchemy
 
 db = SQLAlchemy()
 

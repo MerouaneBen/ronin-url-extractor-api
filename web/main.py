@@ -6,7 +6,6 @@ if os.path.abspath(os.curdir) not in sys.path:
      sys.path.append(os.path.abspath(os.curdir))
 
 from api import create_app
-from flask_sqlalchemy import SQLAlchemy
 from instance.config import Config
 
 app = create_app()
