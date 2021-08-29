@@ -5,7 +5,7 @@ from celery import Celery
 from db_controller import *
 from config import *
 
-CELERY_BROKER_URL = 'redis://:' + REDIS_PASS + '@' + REDIS_HOST + ':' + REDIS_PORT + '/0'
+CELERY_BROKER_URL = 'redis://:' + REDIS_PASS + '@' + REDIS_HOST + ':' + str(REDIS_PORT) + '/0'
 celery = Celery('tasks', broker=CELERY_BROKER_URL)
 
 
