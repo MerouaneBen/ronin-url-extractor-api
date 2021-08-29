@@ -32,7 +32,7 @@ RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
 ENV API_VERSION = ${VERSION}
 
 # default home for the web
-ENV API_HOME=/home/flask/app
+ENV API_HOME=/home/flask/app/api
 COPY . ${API_HOME}
 
 # Create the group and user to be used in this container
