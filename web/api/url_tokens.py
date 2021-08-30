@@ -7,11 +7,11 @@ class UrlTokens(db.Model):
     """UrlTokens table"""
 
     __tablename__ = 'urltokens'
-    id = Column(db.Integer, primary_key=True, autoincrement=True)
-    token = Column(db.String(30), unique=False, nullable=False)
-    insert_date = Column(db.DateTime, nullable=False)
-    updated_date = Column(db.DateTime, nullable=False)
-    is_active = Column(db.Boolean, nullable=False)
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    token = db.Column(db.String(30), unique=False, nullable=False)
+    insert_date = db.Column(db.DateTime, nullable=False)
+    updated_date = db.Column(db.DateTime, nullable=False)
+    is_active = db.Column(db.Boolean, nullable=False)
 
     def __init__(self, token, insert_date, updated_date,is_active):
         self.token = token
