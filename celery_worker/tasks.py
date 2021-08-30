@@ -44,13 +44,18 @@ def get_path_token():
     driver.quit()
     if path_token:
         active_token = RoninUrlPathController.get_active_path_url_token()
-        for token in active_token :
-            if token == path_token:
-                print("token " + path_token + " already up to date.")
-            else:
-                # insert new token
-                print("new token has been inserted in database.")
-                RoninUrlPathController.insert_path_url_token(path_token)
+        if active_token:
+            for token in active_token :
+                if token == path_token:
+                    print("token " + path_token + " already up to date.")
+                else:
+                    # insert new token
+                    print("new token has been inserted in database.")
+                    RoninUrlPathController.upsert_path_url_token(path_token)
+        else:
+            # insert new token
+            print("No toekn available, we will insert the first one")
+            RoninUrlPathController.insert_path_url_token(path_token)
     else:
         print("Error, we cannot get path token.")
 

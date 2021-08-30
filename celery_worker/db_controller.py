@@ -25,7 +25,7 @@ class RoninUrlPathController:
             return None
 
     @classmethod
-    def insert_path_url_token(cls, new_token):
+    def upsert_path_url_token(cls, new_token):
         session = db_session()
         # deactivate current active token
         statement = text("""UPDATE urltokens set is_active=:is_active, updated_date=:updt where is_active = 1""")
@@ -33,6 +33,18 @@ class RoninUrlPathController:
         session.execute(statement)
         session.commit()
 
+        # insert  new active token
+        row = {"insert_date": datetime.datetime.utcnow(), "is_active": 1, "token": new_token}
+        statement = text("""INSERT INTO urltokens(insert_date, is_active, token) 
+                         VALUES(:insert_date, :is_active, :token)""")
+        session.execute(statement, **row)
+        session.commit()
+        # we close session
+        session.close()
+
+    @classmethod
+    def insert_path_url_token(cls, new_token):
+        session = db_session()
         # insert  new active token
         row = {"insert_date": datetime.datetime.utcnow(), "is_active": 1, "token": new_token}
         statement = text("""INSERT INTO urltokens(insert_date, is_active, token) 
