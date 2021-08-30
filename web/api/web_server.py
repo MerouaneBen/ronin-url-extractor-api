@@ -23,7 +23,7 @@ def index():
 @ronin_blueprint.route('/active_token', methods=['GET'])
 def active_token():
     response = {}
-    current_token = UrlTokens.query.filter_by(is_active == True).first()
+    current_token = UrlTokens.query.filter_by(is_active=True).first()
     if current_token:
         success = True
         response.update({
