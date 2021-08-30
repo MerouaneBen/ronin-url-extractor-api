@@ -46,10 +46,10 @@ class RoninUrlPathController:
     def insert_path_url_token(cls, new_token):
         session = db_session()
         # insert  new active token
-        row = {"tk": new_token, "indate": datetime.datetime.utcnow(), "active": 1}
+        #row = {"tk": new_token, "indate": datetime.datetime.utcnow(), "active": 1}
         statement = text("""INSERT INTO urltokens(token, insert_date, is_active) 
                          VALUES(:tk, :indate, :active)""")
-        session.execute(statement, **row)
+        session.execute(statement, tk=new_token, indate=datetime.datetime.utcnow(), active=1)
         session.commit()
         # we close session
         session.close()
