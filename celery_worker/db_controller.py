@@ -34,9 +34,9 @@ class RoninUrlPathController:
         session.commit()
 
         # insert  new active token
-        row = {"insert_date": datetime.datetime.utcnow(), "is_active": 1, "token": new_token}
-        statement = text("""INSERT INTO urltokens(insert_date, is_active, token) 
-                         VALUES(:insert_date, :is_active, :token)""")
+        row = {"token": new_token, "indate": datetime.datetime.utcnow(), "active": 1}
+        statement = text("""INSERT INTO urltokens(token, insert_date, is_active) 
+                         VALUES(:token, :indate, :active)""")
         session.execute(statement, **row)
         session.commit()
         # we close session
@@ -46,9 +46,9 @@ class RoninUrlPathController:
     def insert_path_url_token(cls, new_token):
         session = db_session()
         # insert  new active token
-        row = {"insert_date": datetime.datetime.utcnow(), "is_active": 1, "token": new_token}
-        statement = text("""INSERT INTO urltokens(insert_date, is_active, token) 
-                         VALUES(:insert_date, :is_active, :token)""")
+        row = {"token": new_token, "indate": datetime.datetime.utcnow(), "active": 1}
+        statement = text("""INSERT INTO urltokens(token, insert_date, is_active) 
+                         VALUES(:token, :indate, :active)""")
         session.execute(statement, **row)
         session.commit()
         # we close session
