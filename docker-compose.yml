@@ -88,6 +88,8 @@ services:
     hostname: ronin-url-token-mariadb
     restart: always
     image: mariadb:latest
+    volumes:
+      - ./mariadb:/var/lib/mysql
     ports:
       - "3306:3306"
     networks:
