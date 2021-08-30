@@ -31,7 +31,7 @@ class RoninUrlPathController:
         updt = datetime.datetime.utcnow()
         statement = text("""UPDATE urltokens set is_active=:active, updated_date=:updt where is_active = 1""")
         statement = statement.bindparams(active=0,  updt=updt)
-        session.execute(statement, {"active": 1, "updt": updt})
+        session.execute(statement, {"active": 0, "updt": updt})
         session.commit()
 
         # insert  new active token
