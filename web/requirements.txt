@@ -4,3 +4,4 @@ Click
 pytz
 mariadb
 Flask-SQLAlchemy
+PyMySQL

@@ -21,7 +21,7 @@ ENV LANGUAGE "C.UTF-8"
 ENV LC_ALL "C.UTF-8"
 
 RUN apt-get update -yqq \
-    && apt-get install -yqq unzip \
+    && apt-get install -yqq unzip software-properties-common \
     && apt-get install -y locales apt-utils curl vim python3-pymysql
 
 COPY requirements.txt requirements.txt
