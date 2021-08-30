@@ -2,5 +2,5 @@ requests
 Flask
 Click
 pytz
-SQLAlchemy
 mariadb
+Flask-SQLAlchemy
