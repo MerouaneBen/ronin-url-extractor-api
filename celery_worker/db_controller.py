@@ -28,17 +28,19 @@ class RoninUrlPathController:
     def upsert_path_url_token(cls, new_token):
         session = db_session()
         # deactivate current active token
+        updt = datetime.datetime.utcnow()
         statement = text("""UPDATE urltokens set is_active=:active, updated_date=:updt where is_active = 1""")
-        statement = statement.bindparams(active=0,  updt=datetime.datetime.utcnow())
-        session.execute(statement)
+        statement = statement.bindparams(active=0,  updt=updt)
+        session.execute(statement, {"active": 1, "updt": updt})
         session.commit()
 
         # insert  new active token
-        row = {"tk": new_token, "indate": datetime.datetime.utcnow(), "active": 1}
-        statement = text("""INSERT INTO urltokens(token, insert_date, is_active) 
-                         VALUES(:tk, :indate, :active)""")
-        session.execute(statement, **row)
+        indate = datetime.datetime.utcnow()
+        statement = text("""INSERT INTO urltokens(token, insert_date, is_active) VALUES(:tk, :indate, :active)""")
+        bind_param_st = statement.bindparams(tk=new_token, indate=indate, active=1)
+        session.execute(bind_param_st, {"tk": new_token, "indate": indate, "active": 1})
         session.commit()
+
         # we close session
         session.close()
 
@@ -46,10 +48,10 @@ class RoninUrlPathController:
     def insert_path_url_token(cls, new_token):
         session = db_session()
         # insert  new active token
-        #row = {"tk": new_token, "indate": datetime.datetime.utcnow(), "active": 1}
-        statement = text("""INSERT INTO urltokens(token, insert_date, is_active) 
-                         VALUES(:tk, :indate, :active)""")
-        session.execute(statement, tk=new_token, indate=datetime.datetime.utcnow(), active=1)
+        indate = datetime.datetime.utcnow()
+        statement = text("""INSERT INTO urltokens(token, insert_date, is_active) VALUES(:tk, :indate, :active)""")
+        bind_param_st = statement.bindparams(tk=new_token, indate=indate, active=1)
+        session.execute(bind_param_st, {"tk": new_token, "indate": indate, "active": 1})
         session.commit()
         # we close session
         session.close()
